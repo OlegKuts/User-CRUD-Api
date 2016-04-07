@@ -1,9 +1,9 @@
 class Api::UsersController < ApplicationController
 
-	respond_to :json
+	respond_to :json, :html
 
 	 def index
-	    respond_with User.all
+	    respond_with User.all    
  	 end
 
 	 def show
