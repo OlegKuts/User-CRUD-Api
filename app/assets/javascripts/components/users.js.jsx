@@ -51,4 +51,5 @@ var User = React.createClass({
 					<td>{age}</td>
 				</tr>;
 	}
+	
 })
