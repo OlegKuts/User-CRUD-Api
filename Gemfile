@@ -27,6 +27,7 @@ gem 'therubyracer'
 
 gem 'responders', '~> 2.0' 
 
+gem 'bootstrap-sass'
 
 gem 'react-rails'
 # Use ActiveModel has_secure_password

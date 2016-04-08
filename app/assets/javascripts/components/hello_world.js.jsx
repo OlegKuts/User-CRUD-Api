@@ -1,5 +1,5 @@
 var HelloWorld = React.createClass({
 	render:function(){
-		return <h1>Hello World</h1>;
+		return <div className="btn btn-danger"><h1 >Hello World</h1></div>;
 	}
 });
