@@ -7,15 +7,16 @@ var UserBox = React.createClass({
 	handleUserSubmit:function (user) {
 		var { users } = this.state;
 		user.id = Date.now();
-		var updatedUsers = users.concat([user]);
-		this.setState({users: updatedUsers});
+		var newUsers = users.concat([user]);
+		this.setState({users: newUsers});
 		 $.ajax({
 	      url: "http://localhost:3000/api/users",
 	      cache: false,
 	      type:'POST',
 	      data: user,
 	      success: function(data) {
-	        this.setState({users: updatedUsers});
+	      	let newUsers = users.concat([data]);
+	        this.setState({users: newUsers});
 	      }.bind(this),
 	      error: function(xhr, status, err) {
 	      	this.setState({users: users});
@@ -46,8 +47,8 @@ var UserBox = React.createClass({
 	    });
 	},
 
-	componentDidMount: function() {
-	    $.ajax({
+	getUsers: function(){
+		$.ajax({
 	      url: "http://localhost:3000/api/users",
 	      cache: false,
 	      type:'GET',
@@ -58,6 +59,10 @@ var UserBox = React.createClass({
 	        console.error(this.props.url, status, err.toString());
 	      }.bind(this)
 	    });
+	},
+
+	componentDidMount: function() {
+	    this.getUsers();
 	},
 
 	render:function(){
@@ -102,7 +107,7 @@ var User = React.createClass({
 
 var UserForm = React.createClass({
 	getInitialState: function() {
-	    return {name: '', surname: '', country: '', age: 0};
+	    return {name: '', surname: '', country: '', age: ''};
 	},
 
 	handleNameIput:function(event){
@@ -123,8 +128,10 @@ var UserForm = React.createClass({
 		if( !(name || surname || country || age) ){
 			return;
 		}
+
 		this.props.onUserSubmit({name: name, surname: surname, country: country, age: age});
-		this.setState({name: '', surname: '', country: '', age: 0});
+		this.setState({name: '', surname: '', country: '', age: ''});
+		$('input').val('');
 	},
 	render:function(){
 		return 	<form className="">
