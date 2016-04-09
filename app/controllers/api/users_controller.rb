@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
 
-	respond_to :json, :html
+	respond_to :json
 
 	def index
 	   respond_with User.all    
@@ -11,7 +11,12 @@ class Api::UsersController < ApplicationController
 	end
 
 	def create
-	   respond_with User.create(params[:user])
+		@user = User.new(user_params)
+	    if @user.save
+	      render json: @user
+	    else
+	      render json: @user.errors, status: :unprocessable_entity
+	    end   
 	end
 
 	def update
@@ -21,4 +26,11 @@ class Api::UsersController < ApplicationController
 	def destroy
 	   respond_with User.destroy(params[:id])
 	end
+
+	private
+
+   	def user_params
+    	params.permit(:name, :surname, :country, :age)
+  	end
+
 end
