@@ -1,10 +1,3 @@
-var tableStyle = {
-	padding:'20px',
-	WebkitTransition: 'all', // note the capital 'W' here
-	msTransition: 'all' // 'ms' is the only lowercase vendor prefix
-};
-
-
 var UserBox = React.createClass({
 
 	getInitialState: function() {
@@ -23,6 +16,28 @@ var UserBox = React.createClass({
 	      data: user,
 	      success: function(data) {
 	        this.setState({users: updatedUsers});
+	      }.bind(this),
+	      error: function(xhr, status, err) {
+	      	this.setState({users: users});
+	        console.error(this.props.url, status, err.toString());
+	      }.bind(this)
+	    });
+	},
+
+	handleUserDelete: function(user){
+		var { users } = this.state;
+		var userId = user.id;
+		var newUsers = users.filter(function(el){
+			return el.id !== userId;
+		});
+		this.setState({users: newUsers});
+		$.ajax({
+	      url: "http://localhost:3000/api/users/"+userId,
+	      cache: false,
+	      type:'DELETE',
+	      data: userId,
+	      success: function(data) {
+	        this.setState({users: newUsers});
 	      }.bind(this),
 	      error: function(xhr, status, err) {
 	      	this.setState({users: users});
@@ -50,7 +65,7 @@ var UserBox = React.createClass({
 		return 	<div>
 					<UserForm onUserSubmit={this.handleUserSubmit}/>
 					<div className="col-md-10">
-						<UserTable users = {users}/>
+						<UserTable users = {users} userDelete={this.handleUserDelete}/>
 					</div>
 				</div>;
 	}
@@ -59,14 +74,20 @@ var UserBox = React.createClass({
 var UserTable = React.createClass({
 
 	render: function(){
+		var userDelete = this.props.userDelete
 		var users = this.props.users.map(function(user){
-			return <User user={user} key={user.id}/>
+			return <User user={user} key={user.id} userDelete={userDelete}/>
 		});
 		return <table className="table"><tbody>{users}</tbody></table>;
 	}
 })
 
 var User = React.createClass({
+
+	handleDelete: function(){
+		this.props.userDelete(this.props.user);
+	},
+
 	render:function(){
 		var { name, surname, country, age } = this.props.user;
 		return 	<tr>
@@ -74,6 +95,7 @@ var User = React.createClass({
 					<td>{surname}</td>
 					<td>{country}</td>
 					<td>{age}</td>
+					<td><button onClick={this.handleDelete}>Delete</button></td>
 				</tr>;
 	}	
 })
