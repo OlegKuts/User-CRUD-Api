@@ -79,7 +79,6 @@ var UserBox = React.createClass({
 			return element;
 		});
 		this.setState({users: newUsers});
-		console.log(user);
 		$.ajax({
 	      url: "http://localhost:3000/api/users/"+userId,
 	      cache: false,
@@ -260,8 +259,8 @@ var EditUserForm = React.createClass({
 			          <br/>
 			        <input onChange={this.handleCountryIput}
 			          type="text"
-			          value= {country}/> 
-			          <br/>
+			          value= {country}/>
+			          <br/> 
 			         <input onChange={this.handleAgeIput}
 			          type="number"
 			          value= {age}/> 
