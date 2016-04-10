@@ -105,6 +105,7 @@ var UserBox = React.createClass({
 					cancelEdit={this.handleUserCancelClick}/>:'';
 		return 	<div>
 					<UserForm onUserSubmit={this.handleUserSubmit}/>
+					<br/>
 					<div className="col-md-8">
 						<UserTable users = {users} userDelete={this.handleUserDelete} userEdit={this.handleUserEditClick}/>
 					</div>
@@ -252,15 +253,19 @@ var EditUserForm = React.createClass({
 			        <input onChange={this.handleNameIput}
 			          type="text"
 			          value= {name}/>
+			          <br/>
 			        <input onChange={this.handleSurnameIput}
 			          type="text"
 			          value= {surname}/>
+			          <br/>
 			        <input onChange={this.handleCountryIput}
 			          type="text"
 			          value= {country}/> 
+			          <br/>
 			         <input onChange={this.handleAgeIput}
 			          type="number"
 			          value= {age}/> 
+			          <br/>
 			        <input onClick={this.handleSubmit} type="submit" value="Submit" />
 			        <input onClick={this.handleCancel} type="submit" value="Cancel" />
 		      	</form>
