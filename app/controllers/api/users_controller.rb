@@ -17,15 +17,21 @@ class Api::UsersController < ApplicationController
 	    else
 	      render json: @user.errors, status: :unprocessable_entity
 	    end   
-	end
+	end	
 
 	def update
-	   respond_with User.update(params[:id],params[:user])
+	    @user = User.find(params[:id])
+	    if @user.update_attributes(user_params)
+	        render json: @user
+	    else
+	        render json: @user.errors, status: :unprocessable_entity
+	    end 
 	end
 
 	def destroy
 	   respond_with User.destroy(params[:id])
 	end
+	
 
 	private
 
